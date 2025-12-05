@@ -58,3 +58,227 @@ if [ -z "$1" ] || ! echo "$SUPPORTED_BOARDS" | grep -qw "$1"; then
     echo
     exit 1
 fi
+
+# lan
+[ -n "$LAN" ] && export LAN=$LAN || export LAN=10.0.0.1
+
+# platform
+platform="$1"
+toolchain_arch="aarch64_cortex-a53"
+export platform toolchain_arch
+
+# build.sh flags
+export ROOT_PASSWORD=$ROOT_PASSWORD
+
+# print version
+echo -e "\r\n${GREEN_COLOR}Building $platform${RES}\r\n"
+case "$platform" in
+    cetron-ct3003-ubootmod)
+        echo -e "${GREEN_COLOR}Model: Cetron CT3003 (U-Boot mod)${RES}"
+        model="ct3003-ubootmod"
+        ;;
+    cmcc-a10-ubootmod)
+        echo -e "${GREEN_COLOR}Model: CMCC A10 (U-Boot mod)${RES}"
+        model="cmcc-a10"
+        ;;
+    h3c-magic-nx30-pro)
+        echo -e "${GREEN_COLOR}Model: H3C Magic NX30 Pro${RES}"
+        model="nx30-pro"
+        ;;
+    imou-lc-hx3001)
+        echo -e "${GREEN_COLOR}Model: Imou LC-HX3001${RES}"
+        model="hx3001"
+        ;;
+    nokia-ea0326gmp)
+        echo -e "${GREEN_COLOR}Model: Nokia EA0326GMP${RES}"
+        model="ea0326gmp"
+        ;;
+    qihoo-360t7)
+        echo -e "${GREEN_COLOR}Model: 360 T7${RES}"
+        model="360t7"
+        ;;
+    clx-s20p)
+        echo -e "${GREEN_COLOR}Model: CLX S20P${RES}"
+        model="s20p"
+        ;;
+    netcore-n60-pro)
+        echo -e "${GREEN_COLOR}Model: Netcore N60 Pro${RES}"
+        model="n60-pro"
+        ;;
+    netcore-n60-pro-512rom)
+        echo -e "${GREEN_COLOR}Model: Netcore N60 Pro (512MB ROM)${RES}"
+        model="n60-pro-512"
+        ;;
+    jdcloud-re-cp-03)
+        echo -e "${GREEN_COLOR}Model: JDCloud RE-CP-03${RES}"
+        model="re-cp-03"
+        ;;
+esac
+
+# print build opt
+get_kernel_version=$(curl -s $mirror/tags/kernel-6.6)
+kmod_hash=$(echo -e "$get_kernel_version" | awk -F'HASH-' '{print $2}' | awk '{print $1}' | tail -1 | md5sum | awk '{print $1}')
+kmodpkg_name=$(echo $(echo -e "$get_kernel_version" | awk -F'HASH-' '{print $2}' | awk '{print $1}')~$(echo $kmod_hash)-r1)
+echo -e "${GREEN_COLOR}Kernel: $kmodpkg_name ${RES}"
+echo -e "${GREEN_COLOR}Date: $CURRENT_DATE${RES}\r\n"
+echo -e "${GREEN_COLOR}SCRIPT_URL:${RES} ${BLUE_COLOR}$mirror${RES}\r\n"
+echo -e "${GREEN_COLOR}GCC VERSION: 13${RES}"
+print_status() {
+    local name="$1"
+    local value="$2"
+    local true_color="${3:-$GREEN_COLOR}"
+    local false_color="${4:-$YELLOW_COLOR}"
+    local newline="${5:-}"
+    if [ "$value" = "y" ]; then
+        echo -e "${GREEN_COLOR}${name}:${RES} ${true_color}true${RES}${newline}"
+    else
+        echo -e "${GREEN_COLOR}${name}:${RES} ${false_color}false${RES}${newline}"
+    fi
+}
+[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN:${RES} $LAN" || echo -e "${GREEN_COLOR}LAN:${RES} 10.0.0.1"
+[ -n "$ROOT_PASSWORD" ] \
+    && echo -e "${GREEN_COLOR}Default Password:${RES} ${BLUE_COLOR}$ROOT_PASSWORD${RES}" \
+    || echo -e "${GREEN_COLOR}Default Password:${RES} (${YELLOW_COLOR}No password${RES})"
+
+# clean old files
+rm -rf openwrt
+
+# openwrt - releases
+[ "$(whoami)" = "runner" ] && group "source code"
+git clone --depth=1 https://$github/QuickWrt/immortalwrt-mt798x -b openwrt-24.10
+
+if [ -d openwrt ]; then
+    cd openwrt
+    curl -Os https://openwrt.kejizero.xyz/openwrt/patch/key.tar.gz && tar zxf key.tar.gz && rm -f key.tar.gz
+else
+    echo -e "${RED_COLOR}Failed to download source code${RES}"
+    exit 1
+fi
+
+# tags
+git branch | awk '{print $2}' > version.txt
+
+# Init feeds
+[ "$(whoami)" = "runner" ] && group "feeds update -a"
+./scripts/feeds update -a
+[ "$(whoami)" = "runner" ] && endgroup
+
+[ "$(whoami)" = "runner" ] && group "feeds install -a"
+./scripts/feeds install -a
+[ "$(whoami)" = "runner" ] && endgroup
+
+# loader dl
+if [ -f ../dl.gz ]; then
+    tar xf ../dl.gz -C .
+fi
+
+###############################################
+echo -e "\n${GREEN_COLOR}Patching ...${RES}\n"
+
+# scripts
+scripts=(
+  00-prepare_base.sh
+  01-prepare_package.sh
+  02-convert_translation.sh
+  10-custom.sh
+)
+chmod 0755 *sh
+[ "$(whoami)" = "runner" ] && group "patching openwrt"
+bash 00-prepare_base.sh
+bash 01-prepare_package.sh
+bash 10-custom.sh
+find feeds -type f -name "*.orig" -exec rm -f {} \;
+[ "$(whoami)" = "runner" ] && endgroup
+
+rm -f 0*-*.sh 10-custom.sh
+
+# Load devices Config
+if [ "$platform" = "cetron-ct3003-ubootmod" ]; then
+    curl -s $mirror/openwrt/24-config-musl-ct3003 > .config
+elif [ "$platform" = "cmcc-a10-ubootmod" ]; then
+    curl -s $mirror/openwrt/24-config-musl-a10 > .config
+elif [ "$platform" = "h3c-magic-nx30-pro" ]; then
+    curl -s $mirror/openwrt/24-config-musl-nx30 > .config
+elif [ "$platform" = "imou-lc-hx3001" ]; then
+    curl -s $mirror/openwrt/24-config-musl-hx3001 > .config
+elif [ "$platform" = "nokia-ea0326gmp" ]; then
+    curl -s $mirror/openwrt/24-config-musl-ea0326gmp > .config
+elif [ "$platform" = "qihoo-360t7" ]; then
+    curl -s $mirror/openwrt/24-config-musl-360t7 > .config
+elif [ "$platform" = "clx-s20p" ]; then
+    curl -s $mirror/openwrt/24-config-musl-s20p > .config
+elif [ "$platform" = "netcore-n60-pro" ]; then
+    curl -s $mirror/openwrt/24-config-musl-n60pro > .config
+elif [ "$platform" = "netcore-n60-pro-512rom" ]; then
+    curl -s $mirror/openwrt/24-config-musl-n60pro-512 > .config
+else
+    curl -s $mirror/openwrt/24-config-musl-re-cp-03 > .config
+fi
+
+# config-common
+if [ "$platform" = "netcore-n60-pro" ] || [ "$platform" = "netcore-n60-pro-512rom" ]; then
+    curl -s $mirror/openwrt/24-config-ipailna-high-power >> .config
+else
+    curl -s $mirror/openwrt/24-config-common >> .config
+fi
+
+# Toolchain Cache
+if [ "$BUILD_FAST" = "y" ]; then
+    [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
+    [ "$isCN" = "CN" ] && github_proxy="ghp.ci/" || github_proxy=""
+    echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
+    PLATFORM_ID=""
+    [ -f /etc/os-release ] && source /etc/os-release
+    if [ "$PLATFORM_ID" = "platform:el9" ]; then
+        TOOLCHAIN_URL="http://127.0.0.1:8080"
+    else
+        TOOLCHAIN_URL=https://"$github_proxy"github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10
+    fi
+    curl -L ${TOOLCHAIN_URL}/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst -o toolchain.tar.zst $CURL_BAR
+    echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
+    tar -I "zstd" -xf toolchain.tar.zst
+    rm -f toolchain.tar.zst
+    mkdir bin
+    find ./staging_dir/ -name '*' -exec touch {} \; >/dev/null 2>&1
+    find ./tmp/ -name '*' -exec touch {} \; >/dev/null 2>&1
+fi
+
+# init openwrt config
+rm -rf tmp/*
+if [ "$BUILD" = "n" ]; then
+    exit 0
+else
+    make defconfig
+fi
+
+# Compile
+if [ "$BUILD_TOOLCHAIN" = "y" ]; then
+    echo -e "\r\n${GREEN_COLOR}Building Toolchain ...${RES}\r\n"
+    make -j$cores toolchain/compile || make -j$cores toolchain/compile V=s || exit 1
+    mkdir -p toolchain-cache
+    [ "$ENABLE_GLIBC" = "y" ] && LIBC=glibc || LIBC=musl
+    tar -I "zstd -19 -T$(nproc --all)" -cf toolchain-cache/toolchain_${LIBC}_${toolchain_arch}_gcc-${gcc_version}${tools_suffix}.tar.zst ./{build_dir,dl,staging_dir,tmp}
+    echo -e "\n${GREEN_COLOR} Build success! ${RES}"
+    exit 0
+else
+    echo -e "\r\n${GREEN_COLOR}Building OpenWrt ...${RES}\r\n"
+    sed -i "/BUILD_DATE/d" package/base-files/files/usr/lib/os-release
+    sed -i "/BUILD_ID/aBUILD_DATE=\"$CURRENT_DATE\"" package/base-files/files/usr/lib/os-release
+    make -j$cores IGNORE_ERRORS="n m"
+fi
+
+# Compile time
+endtime=`date +'%Y-%m-%d %H:%M:%S'`
+start_seconds=$(date --date="$starttime" +%s);
+end_seconds=$(date --date="$endtime" +%s);
+SEC=$((end_seconds-start_seconds));
+
+if [ -f bin/targets/*/*/sha256sums ]; then
+    echo -e "${GREEN_COLOR} Build success! ${RES}"
+    echo -e " Build time: $(( SEC / 3600 ))h,$(( (SEC % 3600) / 60 ))m,$(( (SEC % 3600) % 60 ))s"
+else
+    echo -e "\n${RED_COLOR} Build error... ${RES}"
+    echo -e " Build time: $(( SEC / 3600 ))h,$(( (SEC % 3600) / 60 ))m,$(( (SEC % 3600) % 60 ))s"
+    echo
+    exit 1
+fi
