@@ -234,9 +234,6 @@ esac
 # config-general
 curl -s "$mirror/openwrt/24-config-general" >> .config
 
-# config-disable
-curl -s $mirror/openwrt/24-disable-config >> .config
-
 # bpf
 [ "$ENABLE_BPF" = "y" ] && curl -s $mirror/openwrt/generic/config-bpf >> .config
 
