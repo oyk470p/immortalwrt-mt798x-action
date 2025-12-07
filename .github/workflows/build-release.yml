@@ -124,27 +124,50 @@ jobs:
       working-directory: /builder
       run: |
         mkdir -p rom
-        if [[ "${{ github.event.inputs.device }}" == cetron-ct3003-ubootmod ]]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "cmcc-a10-ubootmod" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "h3c-magic-nx30-pro" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "imou-lc-hx3001" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "nokia-ea0326gmp" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "qihoo-360t7" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "clx-s20p" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "netcore-n60-pro" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "netcore-n60-pro-512rom" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        elif [ "${{ github.event.inputs.device }}" = "jdcloud-re-cp-03" ]; then
-          cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
-        fi
+        case "${{ github.event.inputs.device }}" in
+          cetron-ct3003)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          cmcc-a10)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          h3c-magic-nx30-pro)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          imou-lc-hx3001)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          nokia-ea0326gmp)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          qihoo-360t7)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          newland-nl-wr8103)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          umi-uax3000e)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          clx-s20p)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          netcore-n60-pro)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          netcore-n60-pro-512rom)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          xiaomi-redmi-router-ax6000)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+            xiaomi-redmi-router-ax6000-512rom)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+          jdcloud-re-cp-03)
+              cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
+              ;;
+        esac
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
