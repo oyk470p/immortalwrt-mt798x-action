@@ -4,10 +4,10 @@
 sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
 
 # default LAN IP
-sed -i "s/10.0.0.1/$LAN/g" package/base-files/files/bin/config_generate
+sed -i "s/192.168.68.1/$LAN/g" package/base-files/files/bin/config_generate
 
 # default WIFI NAME
-sed -i "s/ZeroWrt/$WIFI_NAME/g" package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
+sed -i "s/JDCwifi/$WIFI_NAME/g" package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
 
 # default password
 if [ -n "$ROOT_PASSWORD" ]; then
@@ -94,35 +94,8 @@ function addLinks() {
         var leftCell = document.createElement('div');
         leftCell.className = 'td left';
         leftCell.style.width = '33%';
-        leftCell.textContent = '帮助与反馈';
-        
-        // 右列：三个按钮
-        var rightCell = document.createElement('div');
-        rightCell.className = 'td left';
-        
-        // 创建QQ交流群按钮
-        var qqLink = document.createElement('a');
-        qqLink.href = 'https://qm.qq.com/q/JbBVnkjzKa';
-        qqLink.target = '_blank';
-        qqLink.className = 'cbi-button';
-        qqLink.style.marginRight = '10px';
-        qqLink.textContent = 'QQ交流群';
-        
-        // 创建TG交流群按钮
-        var tgLink = document.createElement('a');
-        tgLink.href = 'https://t.me/kejizero';
-        tgLink.target = '_blank';
-        tgLink.className = 'cbi-button';
-        tgLink.style.marginRight = '10px';
-        tgLink.textContent = 'TG交流群';
-        
-        // 创建固件地址按钮
-        var firmwareLink = document.createElement('a');
-        firmwareLink.href = 'https://openwrt.kejizero.online';
-        firmwareLink.target = '_blank';
-        firmwareLink.className = 'cbi-button';
-        firmwareLink.textContent = '固件地址';
-        
+        leftCell.textContent = '帮助与反馈';        
+       
         // 组装元素
         rightCell.appendChild(qqLink);
         rightCell.appendChild(tgLink);
@@ -141,7 +114,3 @@ document.addEventListener("DOMContentLoaded", addLinks);
 </script>
 EOF
 
-# Custom firmware version and author metadata
-sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='ZeroWrt-$(date +%Y%m%d)'/g"  package/base-files/files/etc/openwrt_release
-sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION=' By OPPEN321'/g" package/base-files/files/etc/openwrt_release
-sed -i "s|^OPENWRT_RELEASE=\".*\"|OPENWRT_RELEASE=\"ZeroWrt 标准版 @R$(date +%Y%m%d) BY OPPEN321\"|" package/base-files/files/usr/lib/os-release
