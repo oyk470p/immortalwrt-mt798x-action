@@ -24,10 +24,6 @@ git clone --depth=1 https://$github/sbwml/packages_lang_golang feeds/packages/la
 # OpenList 
 git clone --depth=1 https://$github/sbwml/luci-app-openlist2 package/openlist
 
-# Mosdns
-git clone --depth=1 -b v5 https://$github/sbwml/luci-app-mosdns package/mosdns
-git clone https://$github/sbwml/v2ray-geodata package/v2ray-geodata
-
 # Adguardhome
 git clone --depth=1 https://$github/sirpdboy/luci-app-adguardhome package/luci-app-adguardhome
 sed -i "s/\(option enabled '\)1'/\10'/" package/luci-app-adguardhome/luci-app-adguardhome/root/etc/config/AdGuardHome
@@ -37,9 +33,6 @@ git clone --depth=1 https://$github/sirpdboy/luci-app-partexp.git package/luci-a
 
 # 一键唤醒
 git_sparse_clone main https://$github/sbwml/openwrt_pkgs luci-app-wolplus
-
-# Lucky
-git clone --depth=1 https://$github/gdy666/luci-app-lucky package/luci-app-lucky
 
 # OpenAppFilter
 git clone --depth=1 https://$github/destan19/OpenAppFilter.git package/OpenAppFilter
