@@ -286,7 +286,11 @@ curl -s "$mirror/openwrt/24-config-general" >> .config
 if [ "$BUILD_FAST" = "y" ]; then
     echo -e "\n${GREEN_COLOR}Download Toolchain ...${RES}"
     [ -f /etc/os-release ] && source /etc/os-release
-    TOOLCHAIN_URL=https://github.com/QuickWrt/openwrt_caches/releases/download/openwrt-24.10
+    if [ "$(whoami)" = "zhao" ]; then
+        TOOLCHAIN_URL="http://127.0.0.1:8080/openwrt_caches"
+    else
+        TOOLCHAIN_URL="https://github.com/QuickWrt/openwrt_caches/releases/download/openwrt-24.10"
+    fi
     curl -L ${TOOLCHAIN_URL}/toolchain_musl_${toolchain_arch}_gcc-13.tar.zst -o toolchain.tar.zst $CURL_BAR
     echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
     tar -I "zstd" -xf toolchain.tar.zst
