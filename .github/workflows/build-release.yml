@@ -11,7 +11,7 @@ on:
         options:
           - 'cetron-ct3003'
           - 'cmcc-a10'
-          - 'cmcc_rax3000m-emmc'
+          - 'cmcc-rax3000m-emmc'
           - 'umi-uax3000e'          
           - 'h3c-magic-nx30-pro'
           - 'imou-lc-hx3001'
@@ -19,6 +19,7 @@ on:
           - 'newland-nl-wr8103'
           - 'philips-hy3000'
           - 'qihoo-360t7'
+          - 'xiaomi-mi-router-ax3000t'         
           - 'clx-s20p'
           - 'netcore-n60-pro'
           - 'netcore-n60-pro-512rom'
@@ -127,10 +128,10 @@ jobs:
       run: |
         mkdir -p rom
         case "${{ github.event.inputs.device }}" in
-          cetron-ct3003|cmcc-a10|cmcc_rax3000m-emmc|h3c-magic-nx30-pro|imou-lc-hx3001|\
+          cetron-ct3003|cmcc-a10|cmcc-rax3000m-emmc|h3c-magic-nx30-pro|imou-lc-hx3001|\
           nokia-ea0326gmp|\philips-hy3000|qihoo-360t7|newland-nl-wr8103|umi-uax3000e|\
-          clx-s20p|netcore-n60-pro|netcore-n60-pro-512rom|xiaomi-redmi-router-ax6000|\
-          xiaomi-redmi-router-ax6000-512rom|jdcloud-re-cp-03)
+          xiaomi-mi-router-ax3000t|clx-s20p|netcore-n60-pro|netcore-n60-pro-512rom|\
+          xiaomi-redmi-router-ax6000|xiaomi-redmi-router-ax6000-512rom|jdcloud-re-cp-03)
               cp -a openwrt/bin/targets/mediatek/*/*-sysupgrade.bin rom/
               ;;
         esac
