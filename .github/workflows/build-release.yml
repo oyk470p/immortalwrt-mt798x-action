@@ -16,6 +16,7 @@ on:
           - 'imou-lc-hx3001'
           - 'nokia-ea0326gmp'
           - 'newland-nl-wr8103'
+          - 'philips-hy3000'
           - 'qihoo-360t7'
           - 'clx-s20p'
           - 'netcore-n60-pro'
