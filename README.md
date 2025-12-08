@@ -34,6 +34,25 @@
 ### 6️⃣ 支持一键在线 / 本地编译固件
 提供自动化编译脚本，无需复杂配置即可生成定制固件，轻松完成个性化构建。
 
+## 固件下载 [![](https://img.shields.io/badge/-编译状态及下载链接-FFFFFF.svg)](#固件下载-)
+| 固件名称 | 下载地址 |
+| -------- | -------- |
+| cetron-ct3003 | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| cmcc-a10 | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| umi-uax3000e | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| philips-hy3000 | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| newland-nl-wr8103 | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| h3c-magic-nx30-pro | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| imou-lc-hx3001 | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| nokia-ea0326gmp | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| qihoo-360t7 | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| clx-s20p | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| netcore-n60-pro | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| netcore-n60-pro-512rom | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| jdcloud-re-cp-03 | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| xiaomi-redmi-router-ax6000 | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+| xiaomi-redmi-router-ax6000-512rom | [下载](https://github.com/OPPEN321/immortalwrt-mt798x-action/releases/tag/openwrt-24.10) |
+
 ## 近期更新 [![](https://img.shields.io/badge/-近期固件更新-FFFFFF.svg)](#近期更新-)
 🤣努力修复中……
 
