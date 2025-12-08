@@ -78,7 +78,6 @@ jobs:
         echo
 
     - name: Compile OpenWrt
-      working-directory: /builder
       id: compile
       continue-on-error: true
       run: |
@@ -90,14 +89,12 @@ jobs:
         echo "latest_release=$tags"
 
     - name: Extensive logs after a failed compilation
-      working-directory: /builder
       if: steps.compile.outcome == 'failure'
       run: |
         cd openwrt
         make V=s
         
     - name: Prepare Firmware Files
-      working-directory: /builder
       run: |
         mkdir -p rom
         case "${{ github.event.inputs.device }}" in
