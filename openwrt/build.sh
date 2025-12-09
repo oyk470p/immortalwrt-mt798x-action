@@ -69,6 +69,8 @@ export platform toolchain_arch
 
 # build.sh flags
 export ROOT_PASSWORD=$ROOT_PASSWORD
+export WIFI_NAME=$WIFI_NAME
+export WIFI_PASSWORD=$WIFI_PASSWORD
 
 # print version
 echo -e "\r\n${GREEN_COLOR}Building $platform${RES}\r\n"
