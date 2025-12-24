@@ -60,7 +60,7 @@ if [ -z "$1" ] || ! echo "$SUPPORTED_BOARDS" | grep -qw "$1"; then
 fi
 
 # lan
-[ -n "$LAN" ] && export LAN=$LAN || export LAN=10.0.0.1
+[ -n "$LAN" ] && export LAN=$LAN || export LAN=192.168.68.1
 
 # platform
 platform="$1"
@@ -105,7 +105,7 @@ print_status() {
         echo -e "${GREEN_COLOR}${name}:${RES} ${false_color}false${RES}${newline}"
     fi
 }
-[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN:${RES} $LAN" || echo -e "${GREEN_COLOR}LAN:${RES} 10.0.0.1"
+[ -n "$LAN" ] && echo -e "${GREEN_COLOR}LAN:${RES} $LAN" || echo -e "${GREEN_COLOR}LAN:${RES} 192.168.68.1"
 [ -n "$ROOT_PASSWORD" ] \
     && echo -e "${GREEN_COLOR}ROOT PASSWORD:${RES} ${BLUE_COLOR}$ROOT_PASSWORD${RES}" \
     || echo -e "${GREEN_COLOR}ROOT PASSWORD:${RES} (${YELLOW_COLOR}No password${RES})"
@@ -125,7 +125,7 @@ rm -rf openwrt
 
 # openwrt - releases
 [ "$(whoami)" = "runner" ] && group "source code"
-git clone --depth=1 -b openwrt-24.10 https://$github/padavanonly/immortalwrt-mt798x-24.10.git openwrt
+git clone --depth=1 -b openwrt-24.10 https://$github/padavanonly/immortalwrt-mt798x-24.10.git openwrt-24.10-6.6
 
 if [ -d openwrt ]; then
     cd openwrt
