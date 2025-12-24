@@ -125,7 +125,7 @@ rm -rf openwrt
 
 # openwrt - releases
 [ "$(whoami)" = "runner" ] && group "source code"
-git clone --depth=1 -b openwrt-24.10 https://$github/padavanonly/immortalwrt-mt798x-24.10.git openwrt-24.10-6.6
+git clone -b openwrt-24.10-6.6 --single-branch --filter=blob:none https://github.com/padavanonly/immortalwrt-mt798x-24.10 immortalwrt-mt798x-24.10
 
 if [ -d openwrt ]; then
     cd openwrt
