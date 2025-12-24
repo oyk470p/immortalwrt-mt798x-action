@@ -9,24 +9,6 @@ on:
         default: 'jdcloud-re-cp-03'
         type: choice
         options:
-          - 'cetron-ct3003'
-          - 'cmcc-a10'
-          - 'cmcc-rax3000m-emmc'
-          - 'cmcc-rax3000m-nand'
-          - 'cmcc-rax3000me-nand'
-          - 'umi-uax3000e'          
-          - 'h3c-magic-nx30-pro'
-          - 'imou-lc-hx3001'
-          - 'nokia-ea0326gmp'
-          - 'newland-nl-wr8103'
-          - 'philips-hy3000'
-          - 'qihoo-360t7'
-          - 'xiaomi-mi-router-ax3000t'         
-          - 'clx-s20p'
-          - 'netcore-n60-pro'
-          - 'netcore-n60-pro-512rom'
-          - 'xiaomi-redmi-router-ax6000'
-          - 'xiaomi-redmi-router-ax6000-512rom'
           - 'jdcloud-re-cp-03'
           - 'all-mt7981-devices'
           - 'all-mt7986-devices'
@@ -34,28 +16,28 @@ on:
       lan_addr:
         description: '🌐 设置默认 LAN IP 地址'
         required: true
-        default: '10.0.0.1'
-        输入: string
+        default: '192.168.68.1'
+        type: string
       wifi_name:
         description: '🛜 设置默认 WIFI 名称（可选，默认ZeroWrt）'
         required: false
-        default: 'ZeroWrt'
-        输入: string
+        default: 'JDCwifi'
+        type: string
       wifi_password:
         description: '🆔 设置默认 WIFI 密码（可选，默认1234567890）'
         required: false
         default: '1234567890'
-        输入: string          
+        type: string          
       root_password:
         description: '🔐 设置默认 root 密码（可选，默认password）'
-        required: false
+        required: true
         default: 'password'
-        输入: string
+        type: string
       build_options:
         description: '🔧 构建选项（可输入多个，用空格分隔）'
         required: false
         default: 'BUILD_FAST=y ENABLE_BPF=y'
-        输入: string
+        type: string
 
 jobs:
   build:
