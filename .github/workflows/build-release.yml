@@ -75,7 +75,7 @@ jobs:
 
     - name: Install Caddy Server
       run: |
-        sudo curl -sL -o /usr/bin/caddy https://github.com/caddyserver/caddy/releases/tag/v2.10.2/caddy_2.10.2_linux_amd64.tar.gz
+        sudo curl -sL -o /usr/bin/caddy https://github.com/caddyserver/caddy/releases/download/v2.10.2/caddy_2.10.2_linux_amd64.tar.gz
         tar -xzf caddy_2.10.2_linux_amd64.tar.gz
         sudo tar -xzf /usr/bin/caddy -C /usr/bin/ --strip-components=1
         sudo chmod 755 /usr/bin/caddy
