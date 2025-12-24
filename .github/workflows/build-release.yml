@@ -75,10 +75,11 @@ jobs:
 
     - name: Install Caddy Server
       run: |
-        sudo curl -sL -o /usr/bin/caddy https://github.com/caddyserver/caddy/releases/download/v2.10.2/caddy_2.10.2_linux_amd64.tar.gz
-        tar -xzf caddy_2.10.2_linux_amd64.tar.gz
-        sudo tar -xzf /usr/bin/caddy -C /usr/bin/ --strip-components=1
-        sudo chmod 755 /usr/bin/caddy
+        mkdir -p /tmp/caddy_install
+        wget -O /tmp/caddy_install/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v2.10.2/caddy_2.10.2_linux_amd64.tar.gz"
+        tar -xzf /tmp/caddy_install/caddy.tar.gz -C /tmp/caddy_install/
+        sudo mv /tmp/caddy_install/caddy /usr/bin/caddy
+        sudo chmod +x /usr/bin/caddy
         echo ":8080 {" > caddyfile
         echo "    root * $(pwd)/immortalwrt-mt798x-action" >> caddyfile
         echo "    file_server browse" >> caddyfile
