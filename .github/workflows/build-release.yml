@@ -6,8 +6,8 @@ on:
       device:
         description: '➡️ 选择需构建固件的设备型号'
         required: true
-        default: 'netcore-n60-pro'
-        type: choice
+        default: 'jdcloud-re-cp-03'
+        输入: choice
         options:
           - 'cetron-ct3003'
           - 'cmcc-a10'
@@ -35,27 +35,27 @@ on:
         description: '🌐 设置默认 LAN IP 地址'
         required: true
         default: '10.0.0.1'
-        type: string
+        输入: string
       wifi_name:
         description: '🛜 设置默认 WIFI 名称（可选，默认ZeroWrt）'
         required: false
         default: 'ZeroWrt'
-        type: string
+        输入: string
       wifi_password:
         description: '🆔 设置默认 WIFI 密码（可选，默认1234567890）'
         required: false
         default: '1234567890'
-        type: string          
+        输入: string          
       root_password:
         description: '🔐 设置默认 root 密码（可选，默认password）'
         required: false
         default: 'password'
-        type: string
+        输入: string
       build_options:
         description: '🔧 构建选项（可输入多个，用空格分隔）'
         required: false
         default: 'BUILD_FAST=y ENABLE_BPF=y'
-        type: string
+        输入: string
 
 jobs:
   build:
