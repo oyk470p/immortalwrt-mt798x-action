@@ -113,7 +113,7 @@ jobs:
       working-directory: /builder
       if: steps.compile.outcome == 'failure'
       run: |
-        cd immortalwrt-mt798x-action/openwrt
+        cd openwrt
         make V=s
         
     - name: Prepare Firmware Files
