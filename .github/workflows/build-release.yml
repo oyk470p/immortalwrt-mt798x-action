@@ -7,7 +7,7 @@ on:
         description: '➡️ 选择需构建固件的设备型号'
         required: true
         default: 'jdcloud-re-cp-03'
-        输入: choice
+        type: choice
         options:
           - 'cetron-ct3003'
           - 'cmcc-a10'
