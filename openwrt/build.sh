@@ -211,7 +211,7 @@ if [ "$BUILD_FAST" = "y" ]; then
     if [ "$(whoami)" = "zhao" ]; then
         TOOLCHAIN_URL="http://127.0.0.1:8080/openwrt_caches"
     else
-        TOOLCHAIN_URL="https://github.com/sbwml/openwrt_caches/releases/tag/openwrt-24.10"
+        TOOLCHAIN_URL="https://github.com/sbwml/openwrt_caches/releases/download/openwrt-24.10"
     fi
     curl -L ${TOOLCHAIN_URL}/toolchain_musl_${toolchain_arch}_gcc-15.tar.zst -o toolchain.tar.zst $CURL_BAR
     echo -e "\n${GREEN_COLOR}Process Toolchain ...${RES}"
